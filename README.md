@@ -2,6 +2,7 @@
 # Air Quality Prediction (PM2.5 Forecasting) 
 
 **Course:** CS 470: Machine Learning
+
 **Presented by:** Syed Mukarrum Ali and Muhammad Aryaan Kasi
 
 ## 1. Abstract
