@@ -110,6 +110,9 @@ Implements a feedback loop for long-term prediction.
 | **Random Forest** | 0.03632 | 0.02511 | 0.8124 |
 | **XGBoost** | 0.03391 | 0.02245 | 0.8456 |
 | **LSTM** | **0.03082** | **0.01589** | **0.8912** |
+<img width="717" height="468" alt="image" src="https://github.com/user-attachments/assets/b29a0c0e-ca2a-4916-aada-b703243bc978" />
+<img width="1375" height="457" alt="image" src="https://github.com/user-attachments/assets/f569bd2f-0918-4306-ba3b-065ff7ef659a" />
+
 
 ### 7.2 Interpretation
 * **Loss Convergence:** The LSTM successfully converged within 15 epochs. The training and validation loss stayed closely aligned, proving the Dropout layers effectively prevented overfitting.
