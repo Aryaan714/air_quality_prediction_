@@ -1,4 +1,4 @@
-# 🌍 Air Quality Prediction: Classical vs. Deep Learning (Project #25)
+#  Air Quality Prediction: Classical vs. Deep Learning (Project #25)
 ### CS 470: Machine Learning | Course Project Fall 2025
 
 **Team Members:**
@@ -7,7 +7,7 @@
 
 ---
 
-## 📝 1. Abstract
+##  1. Abstract
 * **Overview:** This project conducts a rigorous comparative analysis between Classical Machine Learning ensembles (Random Forest, XGBoost) and Deep Learning architectures (Long Short-Term Memory Networks) for the task of time-series forecasting.
 * **Goal:** To predict hourly **PM2.5** (Particulate Matter < 2.5µm) concentrations in major Chinese cities up to 30 days into the future.
 * **Key Findings:** Our experiments demonstrate that while Gradient Boosting (XGBoost) offers excellent computational efficiency, the **LSTM Deep Learning model** achieves superior predictive accuracy (lowest RMSE) by effectively capturing long-term temporal dependencies and seasonal weather patterns.
@@ -15,7 +15,7 @@
 
 ---
 
-## 📖 2. Introduction
+##  2. Introduction
 **Problem Statement:**
 Air pollution is a dynamic, non-linear system influenced by complex interactions between meteorological factors (humidity, pressure, temperature) and human activity. Traditional statistical models often fail to capture the abrupt spikes in pollution (smog events) that are characteristic of urban environments.
 
@@ -29,7 +29,7 @@ Air pollution is a dynamic, non-linear system influenced by complex interactions
 
 ---
 
-## 📊 3. Dataset Description
+##  3. Dataset Description
 * **Source:** UCI Machine Learning Repository (Five Citie PM2.5 Data).
 * **Scope:** Hourly sensor readings (2010–2015) from five major cities: Beijing, Shanghai, Guangzhou, Chengdu, and Shenyang.
 * **Data Volume:** ~43,000 hours of data per city.
@@ -49,7 +49,7 @@ Air pollution is a dynamic, non-linear system influenced by complex interactions
 
 ---
 
-## 💻 4. Code Structure & Implementation Details
+##  4. Code Structure & Implementation Details
 The codebase is modularized into four logical "Cells" to ensure reproducibility.
 
 ### **Cell 1: Intelligent Data Loader & Splitter**
@@ -81,7 +81,7 @@ Implements a feedback loop for long-term prediction.
 
 ---
 
-## 🧠 5. Theoretical Framework & Model Selection
+##  5. Theoretical Framework & Model Selection
 
 ### 5.1 Random Forest Regressor (The "Wisdom of Crowds")
 
@@ -107,7 +107,7 @@ Implements a feedback loop for long-term prediction.
 
 ---
 
-## ⚙️ 6. Experimental Settings (Hyperparameters)
+##  6. Experimental Settings (Hyperparameters)
 
 | Model | Parameter | Range / Value | Description |
 | :--- | :--- | :--- | :--- |
@@ -121,7 +121,7 @@ Implements a feedback loop for long-term prediction.
 
 ---
 
-## 📈 7. Results & Analysis
+##  7. Results & Analysis
 
 ### 7.1 Performance Metrics
 We evaluated models using three key metrics:
@@ -141,7 +141,7 @@ We evaluated models using three key metrics:
 
 ---
 
-## 🔚 8. Conclusion
+##  8. Conclusion
 We successfully demonstrated that while Classical ML models like XGBoost are powerful and efficient, **Deep Learning (LSTM)** is the superior choice for Air Quality Forecasting. Its ability to maintain an internal memory allowing it to model the complex, delayed effects of weather systems on pollution levels.
 
 **Future Work:**
@@ -150,8 +150,6 @@ We successfully demonstrated that while Classical ML models like XGBoost are pow
 
 ---
 
-## 📚 9. References
-1.  **Data Source:** UCI Machine Learning Repository, "PM2.5 Data of Five Chinese Cities".
-2.  **Random Forest:** Breiman, L. "Random Forests." *Machine Learning* 45.1 (2001): 5-32.
-3.  **XGBoost:** Chen, T., & Guestrin, C. "XGBoost: A Scalable Tree Boosting System." *KDD* (2016).
-4.  **LSTM:** Hochreiter, S., & Schmidhuber, J. "Long Short-Term Memory." *Neural Computation* 9.8 (1997).
+##  9. References
+ **Data Source:** UCI Machine Learning Repository, "PM2.5 Data of Five Chinese Cities".
+
