@@ -76,6 +76,8 @@ The models were evaluated on the final 10% hold-out test set:
 | **LSTM** | **0.03082** | **0.01589** | **0.8912** |
 <img width="1375" height="457" alt="image" src="https://github.com/user-attachments/assets/ea678ecf-2dc6-4b07-9925-95d06fd43d25" />
 <img width="713" height="478" alt="image" src="https://github.com/user-attachments/assets/5cf4e96b-9ce9-4896-89c7-9c937f2cc6f7" />
+<img width="1338" height="610" alt="image" src="https://github.com/user-attachments/assets/a3eb37fb-7684-4a8d-9302-ad6b88948196" />
+
 
 
 ### 6.2 Key Visualizations
