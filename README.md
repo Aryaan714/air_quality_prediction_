@@ -2,8 +2,8 @@
 ### CS 470: Machine Learning | Course Project Fall 2025
 
 **Presented By:**
-* [Syed Mukarrum Ali] 
-* [Muhammad Aryaan Kasi]
+* Syed Mukarrum Ali
+* Muhammad Aryaan Kasi
 
 ---
 
