@@ -1,4 +1,4 @@
-# 🌍 Air Quality Forecasting: Classical ML vs. Deep Learning
+#  Air Quality Forecasting: Classical ML vs. Deep Learning
 ### CS 470: Machine Learning | Course Project Fall 2025
 
 ![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
@@ -6,14 +6,14 @@
 ![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-Latest-green)
 ![Status](https://img.shields.io/badge/Status-Completed-success)
 
-## 📌 Project Overview
+##  Project Overview
 This project focuses on the **comparative analysis of Classical Machine Learning algorithms versus Deep Learning architectures** for Time Series Forecasting. Specifically, we aim to predict **PM2.5 Air Quality Indices** for major Chinese cities (Beijing, Shanghai, Guangzhou, Chengdu, Shenyang) up to 30 days into the future.
 
 We implement a rigorous pipeline including intelligent feature selection, hyperparameter tuning, and a 3-way data split (Train/Validation/Test) to ensure robust performance evaluation.
 
 ---
 
-## 🏫 Course Information
+##  Course Information
 * **University:** National University of Sciences and Technology (NUST), Pakistan
 * **Department:** Electrical and Computer Engineering, SEECS
 * **Course:** CS 470 - Machine Learning
@@ -21,7 +21,7 @@ We implement a rigorous pipeline including intelligent feature selection, hyperp
 
 ---
 
-## 📂 Dataset
+##  Dataset
 The dataset consists of hourly air quality and meteorological data from five major cities in China (2010–2015).
 * **Source:** UCI Machine Learning Repository (Five Citie PM2.5 Data).
 * **Target Variable:** PM2.5 concentration (ug/m^3).
@@ -35,7 +35,7 @@ The dataset consists of hourly air quality and meteorological data from five maj
 
 ---
 
-## 🧠 Methodology & Models
+##  Methodology & Models
 
 We implemented three distinct models to cover both Classical and Deep Learning approaches:
 
@@ -61,7 +61,7 @@ We implemented three distinct models to cover both Classical and Deep Learning a
 
 ---
 
-## 📊 Evaluation & Results
+##  Evaluation & Results
 
 We employed a **3-Way Split** strategy to prevent data leakage:
 * **Training:** 70%
@@ -79,7 +79,7 @@ We employed a **3-Way Split** strategy to prevent data leakage:
 
 ---
 
-## 🛠️ Installation & Usage
+##  Installation & Usage
 
 ### Prerequisites
 * Python 3.8+
