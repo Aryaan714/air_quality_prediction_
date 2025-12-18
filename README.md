@@ -1,4 +1,4 @@
-# Air Quality Prediction: Classical vs. Deep Learning (Project #25)
+# 🌬️ Air Quality Prediction: Classical vs. Deep Learning (Project #25)
 ### CS 470: Machine Learning | Course Project Fall 2025
 
 **Presented By:**
@@ -8,123 +8,89 @@
 ---
 
 ## 1. Abstract
-* **Overview:** This project conducts a rigorous comparative analysis between Classical Machine Learning ensembles (Random Forest, XGBoost) and Deep Learning architectures (Long Short-Term Memory Networks) for the task of time-series forecasting.
-* **Goal:** To predict hourly **PM2.5** (Particulate Matter < 2.5µm) concentrations using a localized dataset of ~15,000 records, forecasting up to 30 days into the future.
-* **Key Findings:** Our experiments demonstrate that while Gradient Boosting (XGBoost) offers high computational efficiency, the **LSTM Deep Learning model** achieves superior predictive accuracy (lowest MAE of ~15.89) by effectively capturing long-term temporal dependencies and seasonal weather patterns.
-* **Significance:** Accurate forecasting of PM2.5 is crucial for developing "Early Warning Systems" that allow governments to mitigate smog-related health crises before they occur.
+This project conducts a comparative analysis between Classical Machine Learning ensembles ($Random Forest$, $XGBoost$) and Deep Learning architectures ($Stacked LSTM$) for time-series forecasting. Using a localized dataset of ~15,000 hourly records, we developed a system to predict hourly $PM2.5$ concentrations up to 30 days into the future. Our findings demonstrate that while $XGBoost$ offers high computational efficiency, the **Stacked LSTM model** achieves superior predictive accuracy (lowest $MAE$ of ~15.89) by effectively capturing long-term temporal dependencies.
 
 ---
 
 ## 2. Introduction
 **Problem Statement:**
-Air pollution is a dynamic, non-linear system influenced by complex interactions between meteorological factors (humidity, pressure, temperature). Traditional statistical models often fail to capture the abrupt spikes in pollution (smog events) because they do not account for the sequential "memory" of the atmosphere.
+Air pollution is a non-linear system where current states are highly dependent on historical context. Traditional models often treat data points as independent events, failing to capture the sequential "memory" required to predict abrupt smog events.
 
 **Project Objectives:**
-1. **Data Engineering:** To construct a robust pipeline that handles missing values via interpolation, normalizes diverse sensor data, and selects the most relevant features using mathematical importance scores.
-2. **Model Implementation:** To implement and optimize three distinct classes of algorithms:
-    * *Bagging Ensemble:* Random Forest
-    * *Boosting Ensemble:* XGBoost
-    * *Recurrent Neural Network:* Stacked LSTM
-3. **Evaluation:** To validate model performance using a **60/15/10 Data Split** (Train/Validation/Test) to ensure the models are tested on entirely unseen future data.
+1. **Data Engineering:** Automate cleaning and feature selection using Gini Importance.
+2. **Comparative Modeling:** Optimize $Random Forest$, $XGBoost$, and $Stacked LSTM$.
+3. **Rigorous Validation:** Implement a **60/15/10 chronological split** to ensure the model generalizes to future unseen data.
 
 ---
 
-## 3. Dataset Description
+## 3. Dataset & Preprocessing
 * **Source:** UCI Machine Learning Repository (Pollution Dataset).
-* **Scope:** Hourly sensor readings (~15,177 records) including PM2.5 concentrations, Dew Point, Temperature, and Pressure.
-
-### 3.1 Preprocessing Pipeline
-1. **Missing Value Imputation:**
-    * *Problem:* Sensor failure leads to `NA` values.
-    * *Solution:* We applied **Linear Interpolation** with a 12-hour limit. This assumes weather changes gradually, filling gaps by drawing a straight line between known data points.
-2. **Feature Selection (Dimensionality Reduction):**
-    * We trained a preliminary Random Forest to calculate **Gini Importance**.
-    * We retained only the **Top 4 Features** ($DEWP$, $TEMP$, $PRES$, $HUMI$) that contributed most to reducing prediction error.
-3. **Scaling:**
-    * Applied `MinMaxScaler` to transform features to the range `[0, 1]`. This is critical for LSTM convergence to prevent "exploding gradients" during training.
-4. **Sequence Generation (Sliding Window):**
-    * Transformed tabular data into a 3D Time-Series format: `(Samples, Time Steps, Features)`.
-    * **Window Size:** 24 Hours. The model looks at the previous 24 hours ($T_{-24} \dots T_{-1}$) to predict the next hour ($T_{0}$).
+* **Scope:** ~15,177 hourly sensor readings.
+* **Pipeline:**
+    * **Interpolation:** Missing sensor values were filled using **Linear Interpolation**.
+    * **Feature Selection:** We identified the Top 4 predictors: $DEWP$ (Dew Point), $TEMP$ (Temperature), $PRES$ (Pressure), and $HUMI$ (Humidity).
+    * **Normalization:** Applied `MinMaxScaler` to bring all values into the range $[0, 1]$, preventing gradient instability in the neural network.
+    * **Windowing:** Used a **24-hour sliding window** to predict the subsequent hour.
 
 ---
 
-## 4. Code Structure & Implementation Details
+## 4. Model Architectures & Neural Networks
 
-### **Cell 1: Intelligent Data Loader & Splitter**
-This module automates the ingestion and splitting of the CSV.
-* **Leakage Prevention:** Uses `train_test_split` with `shuffle=False`. In time-series data, shuffling is prohibited as the future cannot predict the past.
-* **Split Logic:**
-    * **Train (60%):** Historical baseline for learning.
-    * **Validation (15%):** Used for real-time tuning and Early Stopping.
-    * **Test (10%):** Final "Exam" on unseen data to report final accuracy.
+### 4.1 Classical Ensembles
+* **Random Forest:** A bagging ensemble that averages predictions from 100 independent decision trees to reduce noise and variance.
+* **XGBoost:** A gradient boosting framework that sequentially corrects the errors of previous trees, optimized for tabular accuracy.
 
-### **Cell 2: Hyperparameter Tuning & Training**
-* **Classical Models:** Random Forest and XGBoost are trained on flattened data to establish baseline regression metrics.
-* **Deep Learning (LSTM):** * Implemented a **Stacked LSTM** architecture (64 units → 32 units).
-    * Includes **Dropout (0.2)** layers after each LSTM block to prevent overfitting.
-    * Uses an **EarlyStopping** callback to stop training automatically if the validation loss plateaus for 3 consecutive epochs.
+### 4.2 Stacked LSTM (Deep Learning)
+We implemented a **Stacked Long Short-Term Memory (LSTM)** network. Unlike standard networks, LSTMs use "gates" (Forget, Input, Output) to maintain an internal **Cell State**. This allows the model to "remember" weather patterns from 24 hours ago that directly influence current pollution spikes.
 
-### **Cell 3: Evaluation Suite**
-Generates performance metrics and visualizes the **Confusion Matrix**.
-* **Metrics:** RMSE, MAE, and R² Score comparison across all three models.
-* **Classification:** Since this is regression, we "binned" results into categories (**Safe, Unhealthy, Hazardous**) to create a Confusion Matrix, assessing how well the model predicts health-critical events.
-
-### **Cell 4: The "Crystal Ball" (Recursive Forecasting)**
-Implements a feedback loop for long-term prediction.
-1. Model predicts hour $T+1$.
-2. This prediction is appended to the input window.
-3. The window "slides" forward, and the model uses its own prediction to forecast $T+2$.
-4. Repeated for 720 hours (30 Days).
+* **Architecture:** * Layer 1: 64 LSTM Units (Sequence Return)
+    * Layer 2: 32 LSTM Units
+    * Hidden: 16 Dense Units (ReLU)
+    * Output: 1 Dense Unit (Linear)
 
 ---
 
-## 5. Theoretical Framework
+## 5. Hyperparameters & Technical Settings
 
-### 5.1 Ensemble Methods (RF & XGBoost)
-* **Random Forest:** A **Bagging** ensemble that averages predictions from multiple independent decision trees to reduce noise.
-* **XGBoost:** A **Boosting** ensemble that builds trees sequentially, with each new tree correcting the residual errors of the previous ones.
+To ensure robust performance and prevent overfitting, the following hyperparameters were utilized:
 
-### 5.2 Stacked LSTM (The "Memory" Model)
-
-* **Theory:** A specialized Recurrent Neural Network (RNN) designed for long-range dependencies.
-* **Mechanism:** It uses a "Cell State" and three gates (Forget, Input, Output) to decide what information from the past (e.g., a pressure drop 12 hours ago) should influence the current prediction.
+| Parameter | Value | Logic |
+| :--- | :--- | :--- |
+| **Optimizer** | Adam | Efficient adaptive learning rate. |
+| **Regularization**| Dropout (0.2) | Randomly disables 20% of neurons to ensure generalization. |
+| **Learning Rate** | 0.001 | Standard starting rate for $PM2.5$ regression. |
+| **Batch Size** | 128 | Balanced gradient stability and training speed. |
+| **Early Stopping**| Patience: 3 | Terminates training if validation loss plateaus for 3 epochs. |
 
 ---
 
-## 6. Experimental Settings
+## 6. Results & Visual Analysis
 
-| Model | Parameter | Value | Description |
+### 6.1 Performance Metrics
+The models were evaluated on the final 10% hold-out test set:
+
+| Model | $RMSE$ | $MAE$ | $R^2$ Score |
 | :--- | :--- | :--- | :--- |
-| **Random Forest** | `n_estimators` | 100 | Total decision trees. |
-| **XGBoost** | `learning_rate` | 0.05 | Weight of each correction tree. |
-| **LSTM** | `Neurons` | 64, 32 | Capacity of temporal memory. |
-| **LSTM** | `Dropout` | 0.2 | Probability of disabling neurons. |
-
----
-
-## 7. Results & Analysis
-
-### 7.1 Performance Metrics
-| Model | RMSE | MAE | R² Score |
-| :--- | :--- | :--- | :--- |
-| **Random Forest** | 0.03632 | 0.02511 | 0.8124 |
-| **XGBoost** | 0.03391 | 0.02245 | 0.8456 |
+| Random Forest | 0.03632 | 0.02511 | 0.8124 |
+| XGBoost | 0.03391 | 0.02245 | 0.8456 |
 | **LSTM** | **0.03082** | **0.01589** | **0.8912** |
-<img width="717" height="468" alt="image" src="https://github.com/user-attachments/assets/b29a0c0e-ca2a-4916-aada-b703243bc978" />
-<img width="1375" height="457" alt="image" src="https://github.com/user-attachments/assets/f569bd2f-0918-4306-ba3b-065ff7ef659a" />
+<img width="1375" height="457" alt="image" src="https://github.com/user-attachments/assets/ea678ecf-2dc6-4b07-9925-95d06fd43d25" />
+<img width="713" height="478" alt="image" src="https://github.com/user-attachments/assets/5cf4e96b-9ce9-4896-89c7-9c937f2cc6f7" />
 
 
-### 7.2 Interpretation
-* **Loss Convergence:** The LSTM successfully converged within 15 epochs. The training and validation loss stayed closely aligned, proving the Dropout layers effectively prevented overfitting.
-* **Classification Accuracy:** The Confusion Matrix confirmed that the LSTM is highly reliable at identifying "Safe" air quality periods, with significant success in flagging "Unhealthy" shifts before they occur.
-
----
-
-## 8. Conclusion
-We successfully demonstrated that while Classical ML models like XGBoost are powerful and efficient, **Deep Learning (LSTM)** is the superior choice for Air Quality Forecasting due to its ability to model the delayed effects of weather systems. 
+### 6.2 Key Visualizations
+* **Learning Curves:** The LSTM reached convergence within 15 epochs. Training and validation loss curves remained aligned, indicating the regularization (Dropout) successfully prevented overfitting.
+* **Confusion Matrix:** By categorizing predictions into **Safe**, **Unhealthy**, and **Hazardous**, we confirmed the LSTM correctly identified over 1,150 "Safe" periods and effectively flagged transitions into unhealthy states.
+* **30-Day Forecast:** The "Crystal Ball" simulation demonstrated the LSTM's ability to maintain atmospheric "rhythm" over 720 hours, whereas classical models tended to revert to a simple mathematical mean.
 
 ---
 
-## 9. References
-* **Data Source:** UCI Machine Learning Repository, "PM2.5 Data".
-* **Frameworks:** TensorFlow, Keras, Scikit-Learn.
+## 7. Conclusion
+This project demonstrates that while $XGBoost$ is a powerful tool for quick tabular analysis, **Deep Learning (LSTM)** is essential for time-series tasks where historical context is key. The LSTM's internal memory cell makes it the superior choice for building "Early Warning Systems" for urban air quality.
+
+---
+
+## 8. Tech Stack
+* **Frameworks:** TensorFlow/Keras (LSTM), XGBoost, Scikit-Learn.
+* **Language:** Python 3.x.
+* **Visualization:** Matplotlib, Seaborn.
