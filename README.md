@@ -1,5 +1,5 @@
-# 🌬️ Air Quality Prediction: Classical vs. Deep Learning (Project #25)
-### CS 470: Machine Learning | Course Project Fall 2025
+# Air Quality Prediction
+### CS 470: Machine Learning
 
 **Presented By:**
 * Syed Mukarrum Ali
