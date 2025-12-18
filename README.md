@@ -1,9 +1,9 @@
 #  Air Quality Prediction: Classical vs. Deep Learning (Project #25)
 ### CS 470: Machine Learning | Course Project Fall 2025
 
-**Team Members:**
-* [Student Name 1] - [Student ID]
-* [Student Name 2] - [Student ID]
+**Presented By:**
+* [Syed Mukarrum Ali] 
+* [Muhammad Aryaan Kasi]
 
 ---
 
